@@ -11,24 +11,20 @@ env:
 
 jobs:
   deploy:
-    name: Deploy to Azure Web App
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Deploy on Success
-        if: ${{ github.event.workflow_run.conclusion == 'success' }}
-        steps:
-          - name: Download published-app artifact
-            uses: actions/download-artifact@v2
-            with:
-              name: published-app
+      - name: Download published-app artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: published-app
 
-          - name: Deploy to Azure Web App
-            uses: azure/webapps-deploy@v2
-            with:
-              app-name: ${{ env.AZURE_WEBAPP_NAME }}
-              publish-profile: ${{ secrets.AZURE_KEY }}
-              package: ./published-app  # Use the correct path here
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_KEY }}
+          package: ./published-app
