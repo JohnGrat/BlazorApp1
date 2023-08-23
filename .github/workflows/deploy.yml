@@ -24,4 +24,4 @@ jobs:
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_KEY }}
-          package: publish  # Use the correct path here
+          package: published-app  # Use the correct path here
