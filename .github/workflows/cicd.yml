@@ -2,9 +2,6 @@ name: CICD workflow
 
 on:
   workflow_dispatch
-
-env:
-  AZURE_WEBAPP_NAME: tabortmig12
   
 
 jobs:
@@ -28,9 +25,8 @@ jobs:
       - name: Publish project
         run: dotnet publish ./BlazorApp1/BlazorApp1.csproj --configuration Release --output ./publish
 
-      - name: Deploy to webapp
-        uses: azure/webapps-deploy@v2
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
         with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          publish-profile: ${{ secrets.AZURE_KEY }}
-          package: ./publish
+          name: published-app
+          path: ./publish

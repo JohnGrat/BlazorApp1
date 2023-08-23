@@ -1,0 +1,27 @@
+name: Trigger Deployment on Success
+
+on:
+  workflow_run:
+    workflows: ["CICD workflow"]
+    types:
+      - completed
+
+env:
+  AZURE_WEBAPP_NAME: tabortmig12
+
+jobs:
+  deploy:
+    name: Deploy to Azure Web App
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Deploy on Success
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ./publish
