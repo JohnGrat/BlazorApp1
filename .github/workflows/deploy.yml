@@ -20,8 +20,15 @@ jobs:
 
       - name: Deploy on Success
         if: ${{ github.event.workflow_run.conclusion == 'success' }}
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          publish-profile: ${{ secrets.AZURE_KEY }}
-          package: published-app  # Use the correct path here
+        steps:
+          - name: Download published-app artifact
+            uses: actions/download-artifact@v2
+            with:
+              name: published-app
+
+          - name: Deploy to Azure Web App
+            uses: azure/webapps-deploy@v2
+            with:
+              app-name: ${{ env.AZURE_WEBAPP_NAME }}
+              publish-profile: ${{ secrets.AZURE_KEY }}
+              package: ./published-app  # Use the correct path here
