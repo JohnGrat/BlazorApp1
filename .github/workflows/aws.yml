@@ -14,9 +14,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Deploy to EC2
+        env: # Define the environment variable here
+          EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
         run: |
           echo "$EC2_SSH_KEY" > deploy_key.pem
           chmod 600 deploy_key.pem
           ssh -i deploy_key.pem ec2-user@34.222.47.249 'cd /home/ec2-user/app && git pull'
-        env:
-          EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
